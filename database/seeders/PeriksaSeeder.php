@@ -10,6 +10,7 @@ class PeriksaSeeder extends Seeder
 {
     public function run(): void
     {
+        // sudah tidak terpakai karena code ini hanya untuk simulasi Relasi pada Pert.2
         Periksa::create([
             'id_pasien' => 3,
             'id_dokter' => 1,
