@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('detail_periksas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('periksa_id')->constrained('periksas');
+            $table->foreignId('obat_id')->constrained('obats');
             $table->timestamps();
         });
     }
