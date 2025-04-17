@@ -4,8 +4,6 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                                                                                                                           with font-awesome or any other icon font library -->
             <li class="nav-item">
                 <a href="{{ route('dokter.dashboard') }}" class="nav-link ">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -68,28 +66,27 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form>
+                            <form action="{{ route('dokter.obatStore') }}" method="POST">
+                                @csrf
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Nama Obat</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Input obat's name">
+                                        <label for="nama_obat">Nama Obat</label>
+                                        <input type="text" name="nama_obat" class="form-control" placeholder="Input nama obat">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Kemasan</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Input kemasan's name">
+                                        <label for="kemasan">Kemasan</label>
+                                        <input type="text" name="kemasan" class="form-control" placeholder="Input kemasan">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Harga</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Input the price">
+                                        <label for="harga">Harga</label>
+                                        <input type="number" name="harga" class="form-control" placeholder="Input harga">
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Tambah Obat</button>
                                 </div>
                             </form>
+
                         </div>
                         <!-- /.card -->
                     </div>
@@ -125,40 +122,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>B001</td>
-                                        <td>Paracetamol</td>
-                                        <td>Dus</td>
-                                        <td>20000</td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning">Edit</button>
-                                            <button type="button" class="btn btn-danger">Hapus</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>B002</td>
-                                        <td>Obat Tidur</td>
-                                        <td>Pil</td>
-                                        <td>10000</td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning">Edit</button>
-                                            <button type="button" class="btn btn-danger">Hapus</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>B003</td>
-                                        <td>Actived</td>
-                                        <td>Sirup</td>
-                                        <td>50000</td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning">Edit</button>
-                                            <button type="button" class="btn btn-danger">Hapus</button>
-                                        </td>
-                                    </tr>
+                                    @foreach($obats as $index => $obat)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ 'B' . str_pad($obat->id, 3, '0', STR_PAD_LEFT) }}</td>
+                                            <td>{{ $obat->nama_obat }}</td>
+                                            <td>{{ $obat->kemasan }}</td>
+                                            <td>{{ $obat->harga }}</td>
+                                            <td>
+                                                <form action="{{ route('dokter.obatDelete', $obat->id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                                </form>
+                                                <a href="{{ route('dokter.obatEdit', $obat->id) }}" class="btn btn-warning">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
+
                             </table>
                         </div>
                         <!-- /.card-body -->

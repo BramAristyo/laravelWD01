@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ObatSeeder::class,
             PeriksaSeeder::class,
+            DetailPeriksaSeeder::class,
         ]);
     }
 }

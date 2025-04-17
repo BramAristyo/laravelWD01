@@ -35,21 +35,8 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Pasien</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+    <section class="content-header">
+    </section>
     <!-- /.content-header -->
 
     <!-- Main content -->
@@ -85,37 +72,83 @@
                         <table class="table table-hover text-nowrap">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>ID Periksa</th>
+                                    <th>No</th>
                                     <th>Dokter</th>
                                     <th>Tanggal Periksa</th>
-                                    <th>Catatan</th>
-                                    <th>Obat</th>
                                     <th>Biaya Periksa</th>
+                                    <th>Detail</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>P001</td>
-                                    <td>Andi</td>
-                                    <td>24-03-2025</td>
-                                    <td>Perlu banyak tidur</td>
-                                    <td>Obat tidur</td>
-                                    <td>170000</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>P002</td>
-                                    <td>Andi</td>
-                                    <td>26-03-2025</td>
-                                    <td>Perlu banyak olahraga</td>
-                                    <td>Ashwagandha</td>
-                                    <td>200000</td>
-                                </tr>
+                                @foreach($riwayats as $riwayat)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $riwayat->dokter->nama }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($riwayat->tgl_periksa)->format('d-m-Y') }}</td>
+                                        <td>
+                                            @if(is_null($riwayat->biaya_periksa))
+                                                <span class="badge badge-danger">Belum Ada</span>
+                                            @else
+                                                <span class="badge badge-success">Rp {{ number_format($riwayat->biaya_periksa, 0, ',', '.') }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#modalDetail{{ $riwayat->id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Modal Section -->
+                    @foreach($riwayats as $riwayat)
+                    <div class="modal fade" id="modalDetail{{ $riwayat->id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $riwayat->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel{{ $riwayat->id }}">Detail Pemeriksaan</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Dokter:</strong> {{ $riwayat->dokter->nama }}</p>
+                                    <p><strong>Tanggal Periksa:</strong> {{ \Carbon\Carbon::parse($riwayat->tgl_periksa)->format('d-m-Y H:i') }}</p>
+                                    <p>
+                                        <strong>Biaya:</strong>
+                                        @if(is_null($riwayat->biaya_periksa))
+                                            <span class="text-danger">Belum Diinput</span>
+                                        @else
+                                            Rp {{ number_format($riwayat->biaya_periksa, 0, ',', '.') }}
+                                        @endif
+                                    </p>
+                                    <p>
+                                        <strong>Catatan:</strong>
+                                        @if(is_null($riwayat->catatan))
+                                            <span class="text-danger">Belum Ada Catatan</span>
+                                        @else
+                                            {{ $riwayat->catatan }}
+                                        @endif
+                                    </p>
+                                    <p><strong>Obat:</strong></p>
+                                    <ul>
+                                        @foreach($riwayat->detailPeriksa ?? [] as $detail)
+                                            <li>{{ $detail->obat->nama_obat ?? '-' }} | {{ $detail->obat->kemasan ?? '-' }} </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+
+
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->

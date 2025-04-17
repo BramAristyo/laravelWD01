@@ -4,8 +4,6 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                                                                                                       with font-awesome or any other icon font library -->
             <li class="nav-item">
                 <a href="{{ route('pasien.dashboard') }}" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -36,19 +34,6 @@
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Pasien</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">General Form</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
@@ -64,20 +49,20 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form>
+                        <form action="{{ route('pasien.periksaStore') }}" method="POST">
+                            @csrf  {{-- Tambahkan token CSRF --}}
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Nama Anda</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Input your name">
+                                    <label for="exampleSelectRounded0">Pilih Dokter</label>
+                                    <select class="custom-select rounded-0" id="exampleSelectRounded0" name="id_dokter">
+                                        @foreach($dokters as $dokter)
+                                            <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleSelectRounded0">Pilih Dokter</label>
-                                    <select class="custom-select rounded-0" id="exampleSelectRounded0">
-                                        <option>Value 1</option>
-                                        <option>Value 2</option>
-                                        <option>Value 3</option>
-                                    </select>
+                                    <label for="exampleDateTime">Pilih Tanggal & Waktu</label>
+                                    <input type="datetime-local" class="form-control" id="exampleDateTime" name="tgl_periksa" value="{{ old('tanggal_periksa', now()->format('Y-m-d\TH:i')) }}">
                                 </div>
                             </div>
                             <div class="card-footer">

@@ -27,7 +27,7 @@
             <div class="card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
-                <form action="../../index3.html" method="post">
+                <form action="{{ route('login') }}" method="post">
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" placeholder="Email">
                         <div class="input-group-append">
@@ -46,12 +46,9 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
+                            <p class="mb-0">
+                                <a href="register.html" class="text-center">Register a new account</a>
+                            </p>
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
@@ -60,13 +57,6 @@
                         <!-- /.col -->
                     </div>
                 </form>
-
-                <p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="register.html" class="text-center">Register a new account</a>
-                </p>
             </div>
             <!-- /.card-body -->
         </div>

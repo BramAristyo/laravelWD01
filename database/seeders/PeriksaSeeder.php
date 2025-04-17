@@ -23,8 +23,6 @@ class PeriksaSeeder extends Seeder
             'id_pasien' => 3,
             'id_dokter' => 2,
             'tgl_periksa' => Carbon::now()->addDays(3),
-            'catatan' => 'Pasien mengalami sakit kepala dan pusing.',
-            'biaya_periksa' => 200000
         ]);
     }
 }
